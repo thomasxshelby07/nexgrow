@@ -1,26 +1,243 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* NEXGROW Color Palette */
+  --brand: #ff4a01;
+  --background: #000000;
+  --foreground: #f9f9f9;
+
+  --color-primary: #000000;
+  /* Base Black */
+  --color-secondary: #f9f9f9;
+  /* White Text */
+  --color-gray: #646464;
+  /* Paragraph Gray */
+  --color-dark-gray: #333333;
+  /* Cards/Sections BG */
+  --color-light-gray: #a7a7a7;
+  /* Borders */
+
+  /* Gradient Colors */
+  --gradient-start: #d9c3ab;
+  --gradient-mid1: #c10801;
+  --gradient-mid2: #f16001;
+  --gradient-end: #000000;
 }
 
 @theme inline {
+  --color-brand: var(--brand);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-gray: var(--color-gray);
+  --color-dark-gray: var(--color-dark-gray);
+  --color-light-gray: var(--color-light-gray);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-playfair {
+  font-family: var(--font-playfair), serif;
+}
+
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4a01;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ff4a01;
+}
+
+/* Hide Scrollbar Utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    /* 3 sets of logos, so we move -1/3 to loop perfectly */
+    transform: translateX(-33.333333%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}
+
+@layer utilities {
+  .animate-gradient-xy {
+    background-size: 200% 200%;
+    animation: gradient-xy 6s ease infinite;
+  }
+}
+
+@keyframes gradient-xy {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes scroll-y {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-y {
+  animation: scroll-y 20s linear infinite;
+}
+
+/* Dual Column Scrolling Animations */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scroll-down {
+  0% {
+    transform: translateY(-50%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-scroll-up {
+  animation: scroll-up 25s linear infinite;
+}
+
+.animate-scroll-down {
+  animation: scroll-down 25s linear infinite;
+}
+
+.animate-scroll-up-slow {
+  animation: scroll-up 40s linear infinite;
+}
+
+.animate-scroll-down-slow {
+  animation: scroll-down 40s linear infinite;
+}
+
+/* Delayed variants for second column (asynchronous effect) */
+.animate-scroll-down-delayed {
+  animation: scroll-down 25s linear infinite;
+  animation-delay: -5s;
+}
+
+.animate-scroll-down-slow-delayed {
+  animation: scroll-down 40s linear infinite;
+  animation-delay: -8s;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Vertical Scrolling Animations - Seamless Loop */
+@keyframes scroll-vertical-up {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-33.333%);
+  }
+}
+
+@keyframes scroll-vertical-down {
+  0% {
+    transform: translateY(-33.333%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* REMOVED CONFLICTING .animate-scroll HERE */
+
+.animate-scroll-slow {
+  animation: scroll-vertical-up 50s linear infinite;
+}
+
+.animate-scroll-reverse {
+  animation: scroll-vertical-down 30s linear infinite;
+}
+
+.animate-scroll-reverse-slow {
+  animation: scroll-vertical-down 50s linear infinite;
+}
+
+.animate-scroll-vertical-up {
+  animation: scroll-vertical-up 40s linear infinite;
+}
+
+.animate-scroll-vertical-down {
+  animation: scroll-vertical-down 40s linear infinite;
 }
