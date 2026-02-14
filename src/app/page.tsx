@@ -7,7 +7,8 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Comparison from "@/components/Comparison";
 import Process from "@/components/Process";
 import CaseStudies from "@/components/CaseStudies";
-// import Reviews from "@/components/Reviews"; // Removed
+import Reviews from "@/components/Reviews";
+import FAQ from "@/components/FAQ";
 // import IntegratedInfrastructure from "@/components/IntegratedInfrastructure"; // Removed
 import CTA from "@/components/CTA";
 
@@ -22,6 +23,8 @@ export default function Home() {
       <section id="comparison"><Comparison /></section>
       <section id="process"><Process /></section>
       <section id="casestudies"><CaseStudies /></section>
+      <section id="reviews"><Reviews /></section>
+      <section id="faq"><FAQ /></section>
       <CTA />
     </main>
   );

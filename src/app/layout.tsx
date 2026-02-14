@@ -15,6 +15,8 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
+import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
   title: "NEXGROW | Premium Agency",
   description: "Elevate your business with NEXGROW - The premium agency solution.",
@@ -29,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.variable} ${playfair.variable} antialiased bg-white text-black`}>
         {children}
+        <Footer />
       </body>
     </html>
   );

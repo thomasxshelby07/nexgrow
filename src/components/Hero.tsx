@@ -64,14 +64,25 @@ export default function Hero() {
                 >
                     <div className="group flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-gray-200/60 transition-all cursor-default shadow-sm">
                         <div className="flex -space-x-2">
-                            {[1, 2, 3].map((i) => (
-                                <div key={i} className={`w-6 h-6 rounded-full border-2 border-white bg-gradient-to-br ${i === 1 ? 'from-blue-400 to-blue-600' : i === 2 ? 'from-purple-400 to-purple-600' : 'from-orange-400 to-orange-600'}`}></div>
+                            {[
+                                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&q=80&fit=crop",
+                                "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=64&h=64&q=80&fit=crop",
+                                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&q=80&fit=crop"
+                            ].map((src, i) => (
+                                <div key={i} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-gray-100">
+                                    <Image
+                                        src={src}
+                                        alt={`User ${i + 1}`}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
                             ))}
                         </div>
                         <span className="h-4 w-[1px] bg-gray-300 mx-1"></span>
-                        <div className="flex items-center gap-1.5">
-                            <span className="flex text-[#ff4a01]">★★★★★</span>
-                            <span className="text-xs font-semibold text-gray-800">Top Rated Agency</span>
+                        <div className="flex items-center gap-1.5 overflow-hidden">
+                            <span className="flex text-[#ff4a01] text-xs">★★★★★</span>
+                            <span className="text-[10px] sm:text-xs font-bold text-gray-800 whitespace-nowrap">4.8+ Rating & 50+ Projects Done</span>
                         </div>
                     </div>
                 </motion.div>
@@ -83,11 +94,10 @@ export default function Hero() {
                     transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
                     className="text-[48px] sm:text-[64px] md:text-[80px] lg:text-[90px] font-semibold tracking-tight text-black leading-[1.05] mb-5 md:mb-4"
                 >
-                    We <span className="font-playfair italic text-[#ff4a01] font-medium">Orbit</span> Around <br className="hidden md:block" />
-                    Your <span className="inline-block px-3 py-0 bg-black text-white rounded-lg -rotate-2 transform mx-1 font-bold">
-                        Business
+                    A <span className="font-playfair italic text-[#ff4a01] font-black">Complete</span> Team <br className="hidden md:block" />
+                    Behind Your <span className="inline-block px-3 py-0 bg-black text-white rounded-lg -rotate-2 transform mx-1 font-bold">
+                        Brand
                     </span>
-                    {" "}Growth
                 </motion.h1>
 
                 {/* Subtext - Reduced Size */}
@@ -97,7 +107,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="text-base md:text-lg text-gray-700 font-medium max-w-[500px] md:max-w-[550px] mx-auto leading-relaxed mb-6 md:mb-5"
                 >
-                    Transforming ambitious brands through strategic design, high-performance development, and data-driven marketing.
+                    Social media, performance marketing, websites and custom software under one roof.
                 </motion.p>
 
                 {/* 2. Single Animated CTA */}

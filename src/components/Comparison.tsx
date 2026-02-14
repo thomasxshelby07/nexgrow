@@ -1,154 +1,99 @@
 "use client";
 
 import { Check, X, ShieldCheck, Zap, Rocket, Coins, Users, Minus } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export default function Comparison() {
-    const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-
-    const criteria = [
+    const features = [
         { name: "Strategy", icon: ShieldCheck },
         { name: "Speed", icon: Zap },
         { name: "Scale", icon: Rocket },
         { name: "Cost", icon: Coins },
-        { name: "Reliable", icon: Users },
-    ];
-
-    const competitors = [
-        {
-            name: "nexgrow",
-            description: "Full-stack growth.",
-            isHero: true,
-            values: [true, true, true, true, true],
-        },
-        {
-            name: "In-House",
-            description: "High fixed cost.",
-            isHero: false,
-            values: [true, false, false, false, true],
-        },
-        {
-            name: "Agencies",
-            description: "Slow & expensive.",
-            isHero: false,
-            values: [true, false, true, false, true],
-        },
-        {
-            name: "Freelancers",
-            description: "Unreliable.",
-            isHero: false,
-            values: [false, true, false, true, false],
-        },
-        {
-            name: "DIY",
-            description: "No strategy.",
-            isHero: false,
-            values: [false, false, false, true, false],
-        },
+        { name: "Reliability", icon: Users },
     ];
 
     return (
-        <section className="relative w-full py-16 lg:py-32 bg-white text-black overflow-hidden border-t border-gray-100">
-
-            {/* Subtle Gradient Background */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-50 via-white to-white opacity-60"></div>
-
+        <section className="relative w-full py-16 lg:py-24 bg-white text-black overflow-hidden mb-20">
             <div className="container relative z-10 mx-auto px-4 lg:px-6">
 
-                {/* Header - Mixed Fonts & Better Visibility */}
-                <div className="text-center mb-12 lg:mb-20 max-w-4xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight leading-[1.1]">
-                        <span className="font-playfair italic font-medium text-gray-800 block md:inline mr-3 decoration-gray-400 decoration-1 line-through opacity-80">
-                            The Old Way?
-                        </span>
-                        <span className="text-black font-sans">
-                            The <span className="text-[#ff4a01]">NexGrow Way.</span>
-                        </span>
+                <div className="text-center mb-10 lg:mb-16 max-w-3xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight leading-tight">
+                        <span className="font-playfair italic text-black font-black">Why Choose</span> <br className="md:hidden" />
+                        <span className="text-[#ff4a01] ml-2 font-sans font-extrabold">NexGrow?</span>
                     </h2>
-                    <p className="text-gray-700 text-base md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
-                        Stop overpaying for mediocrity. Start scaling with precision.
+                    <p className="text-gray-600 text-lg font-medium">
+                        Stop compromising. Start dominating.
                     </p>
                 </div>
 
-                {/* Scrollable Table Container */}
-                <div className="w-full overflow-x-auto pb-6 scrollbar-hide cursor-grab active:cursor-grabbing">
-                    <div className="min-w-[700px] lg:min-w-0 px-2 lg:px-4">
+                {/* 2. UNIFIED TABLE (Mobile & Desktop) - Wider & Premium */}
+                <div className="w-full max-w-6xl mx-auto bg-gray-50/50 rounded-[2.5rem] border border-gray-100 p-2 md:p-4">
 
-                        {/* Table Header */}
-                        <div className="grid grid-cols-6 gap-2 lg:gap-4 mb-3 px-4 text-center border-b border-gray-300 pb-4">
-                            <div className="col-span-1 text-left text-gray-900 font-bold text-[10px] uppercase tracking-[0.15em] pl-2 self-end">Model</div>
-                            {criteria.map((c, i) => (
-                                <div key={i} className="col-span-1 flex flex-col items-center gap-2 group">
-                                    <div className="p-1.5 lg:p-2 rounded bg-gray-200 border border-gray-300 group-hover:border-[#ff4a01]/50 transition-colors">
-                                        <c.icon className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gray-700 group-hover:text-[#ff4a01] transition-colors" />
-                                    </div>
-                                    <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-gray-700 group-hover:text-black transition-colors">{c.name}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Rows */}
-                        <div className="space-y-3">
-                            {competitors.map((competitor, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.05 }}
-                                    viewport={{ once: true }}
-                                    onMouseEnter={() => setHoveredRow(idx)}
-                                    onMouseLeave={() => setHoveredRow(null)}
-                                    className={cn(
-                                        "relative grid grid-cols-6 gap-2 lg:gap-4 p-4 lg:p-6 rounded-xl items-center transition-all duration-300 border shadow-sm",
-                                        competitor.isHero
-                                            ? "bg-white border-[#ff4a01] shadow-[0_10px_40px_-10px_rgba(255,74,1,0.2)] z-10 scale-[1.02]"
-                                            : "bg-gray-100 border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md",
-                                        hoveredRow !== null && hoveredRow !== idx && !competitor.isHero ? "opacity-60 blur-[0.5px]" : "opacity-100"
-                                    )}
-                                >
-                                    {/* Hero Indicator Line */}
-                                    {competitor.isHero && (
-                                        <div className="absolute left-0 top-3 bottom-3 w-[4px] bg-[#ff4a01] rounded-r-full"></div>
-                                    )}
-
-                                    <div className="col-span-1 flex flex-col justify-center pl-3 lg:pl-5">
-                                        <h3 className={cn("text-sm lg:text-lg font-bold truncate", competitor.isHero ? 'text-black' : 'text-gray-900')}>
-                                            {competitor.name === "nexgrow" ? (
-                                                <span className="flex items-center gap-1 text-[#ff4a01]">
-                                                    NEXGROW
-                                                </span>
-                                            ) : competitor.name}
-                                        </h3>
-                                        <p className="text-[10px] lg:text-xs text-gray-600 mt-0.5 font-bold hidden lg:block">
-                                            {competitor.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Criteria Columns */}
-                                    {competitor.values.map((isValid, i) => (
-                                        <div key={i} className="col-span-1 flex items-center justify-center">
-                                            {isValid ? (
-                                                <div className={cn(
-                                                    "w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center transition-all duration-300",
-                                                    competitor.isHero
-                                                        ? 'bg-[#ff4a01] text-white shadow-[0_2px_8px_rgba(255,74,1,0.3)]'
-                                                        : 'bg-gray-300 text-gray-700' // Darker, clear background
-                                                )}>
-                                                    <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4" strokeWidth={3} />
-                                                </div>
-                                            ) : (
-                                                <div className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center text-gray-400">
-                                                    <Minus className="w-3 h-3 lg:w-4 lg:h-4" />
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </motion.div>
-                            ))}
+                    {/* Table Header */}
+                    <div className="grid grid-cols-3 p-4 mb-2">
+                        <div className="col-span-1 text-left font-bold text-gray-400 text-xs uppercase tracking-widest pl-4 self-end">Feature</div>
+                        <div className="col-span-1 text-center font-bold text-gray-400 text-xs uppercase tracking-widest self-end pb-1">Others</div>
+                        {/* NexGrow Column Header - Popped */}
+                        <div className="col-span-1 relative">
+                            <div className="absolute inset-x-0 -top-4 -bottom-2 bg-white rounded-t-2xl shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.05)] border-t border-x border-gray-100"></div>
+                            <div className="relative z-10 text-center font-black text-[#ff4a01] text-lg md:text-xl uppercase tracking-widest flex items-center justify-center gap-2">
+                                <span>NexGrow</span>
+                            </div>
                         </div>
                     </div>
+
+                    {/* Table Body */}
+                    <div className="space-y-2">
+                        {features.map((item, i) => (
+                            <div key={i} className="grid grid-cols-3 relative group">
+                                {/* NexGrow Column Background (Absolute) - Creates the vertical white stripe effect */}
+                                <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white border-x border-gray-100 shadow-sm z-0 first:rounded-t-none last:rounded-b-2xl"></div>
+
+                                {/* Feature Name */}
+                                <div className="col-span-1 flex items-center gap-3 p-4 pl-6 relative z-10">
+                                    <div className="w-10 h-10 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-gray-500 shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                        <item.icon size={18} strokeWidth={1.5} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm md:text-base font-bold text-gray-800 leading-tight">{item.name}</span>
+                                        <span className="text-[10px] text-gray-400 font-medium hidden md:block">Essential for growth</span>
+                                    </div>
+                                </div>
+
+                                {/* Others (X) */}
+                                <div className="col-span-1 flex flex-col items-center justify-center p-4 relative z-10 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mb-1">
+                                        <X className="w-4 h-4 text-gray-500" strokeWidth={3} />
+                                    </div>
+                                    <span className="text-[10px] md:text-xs font-semibold text-gray-400 text-center">
+                                        {i === 0 ? "No Direction" : i === 1 ? "Slow Pace" : i === 2 ? "Bottlenecks" : i === 3 ? "Hidden Costs" : "Unreliable"}
+                                    </span>
+                                </div>
+
+                                {/* NexGrow (Check) */}
+                                <div className="col-span-1 flex flex-col items-center justify-center p-4 relative z-10">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff4a01] to-[#ff7e3c] flex items-center justify-center text-white shadow-lg shadow-orange-200 mb-1 group-hover:scale-110 transition-transform duration-300">
+                                        <Check size={20} strokeWidth={3} />
+                                    </div>
+                                    <span className="text-xs md:text-sm font-bold text-[#ff4a01] text-center">
+                                        {i === 0 ? "Strategic Roadmap" : i === 1 ? "Rapid Execution" : i === 2 ? "Unlimited Scale" : i === 3 ? "Transparent Pricing" : "Dedicated Team"}
+                                    </span>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Bottom CTA */}
+                    <div className="mt-2 p-6 text-center relative z-10">
+                        <div className="inline-block bg-[#ff4a01]/5 rounded-full px-6 py-2 border border-[#ff4a01]/10">
+                            <p className="text-xs md:text-sm font-bold text-[#ff4a01] flex items-center gap-2">
+                                <ShieldCheck size={16} />
+                                100% Satisfaction Guarantee. Or we work for free.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
