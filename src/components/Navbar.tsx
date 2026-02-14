@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Briefcase, Menu, DollarSign, LayoutGrid, MessageSquare, Home, Sparkles, ArrowRight, ChevronRight, User, FileText } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 
 // Service Data
 const services = [
@@ -35,7 +35,7 @@ const services = [
 ];
 
 // Animation Variants
-const menuVariants = {
+const menuVariants: Variants = {
     hidden: { opacity: 0, y: 10, scale: 0.95 },
     visible: {
         opacity: 1,
@@ -51,7 +51,7 @@ const menuVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
     hidden: { opacity: 0, x: -5 },
     visible: { opacity: 1, x: 0 }
 };
