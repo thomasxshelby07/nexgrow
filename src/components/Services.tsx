@@ -1,243 +1,234 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 
 const services = [
     {
-        title: "Growth Marketing",
-        description: "Performance-driven marketing—from awareness to acquisition—designed to drive real business outcomes.",
-        features: [
-            "SEO & Organic Growth",
-            "Social Media Management",
-            "Paid Ads | PPC",
-            "Affiliate & Influencer Marketing",
-            "Email & WhatsApp Marketing"
-        ],
-        images: [
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-        ]
+        id: "01",
+        title: "STRATEGY",
+        features: ["Stakeholder Alignment", "User Research", "Product Strategy"],
+        desc: "Align growth to goals.",
     },
     {
-        title: "Website Development",
-        description: "Stunning, high-performance websites that convert visitors into customers with seamless user experiences.",
-        features: [
-            "Responsive Web Design",
-            "E-commerce Solutions",
-            "SEO Optimization",
-            "Performance & Speed",
-            "Custom CMS Integration"
-        ],
-        images: [
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-        ]
+        id: "02",
+        title: "UI/UX",
+        features: ["Visual Definition", "UX/UI Design", "Usability Testing"],
+        desc: "Design to map value.",
     },
     {
-        title: "Web & App Development",
-        description: "Robust and scalable applications tailored to your business needs, from concept to deployment.",
-        features: [
-            "Cross-Platform Apps",
-            "Progressive Web Apps",
-            "Backend Architecture",
-            "API Integration",
-            "Cloud Deployment"
-        ],
-        images: [
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-        ]
+        id: "03",
+        title: "WEBSITE",
+        features: ["HTML/CSS", "Next.js & React", "SEO Optimization"],
+        desc: "Adapt apps for speed.",
     },
     {
-        title: "Automation & AI Solutions",
-        description: "Streamline operations and enhance decision-making with cutting-edge AI and automation tools.",
-        features: [
-            "Workflow Automation",
-            "AI Chatbots & Assistants",
-            "Predictive Analytics",
-            "Data Processing",
-            "Smart Integrations"
-        ],
-        images: [
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-            "/herobanner.png",
-        ]
+        id: "04",
+        title: "APP",
+        features: ["iOS Development", "Android Native", "Flutter"],
+        desc: "Build high-fidelity apps.",
     },
+    {
+        id: "05",
+        title: "SYSTEM",
+        features: ["HA Architecture", "Payment System", "AI Integration"],
+        desc: "Secure cloud systems.",
+    }
 ];
-
-const ServiceCard = ({ service, index }: { service: typeof services[0], index: number }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    const cardRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.15 }
-        );
-
-        if (cardRef.current) {
-            observer.observe(cardRef.current);
-        }
-
-        return () => {
-            if (cardRef.current) {
-                observer.unobserve(cardRef.current);
-            }
-        };
-    }, []);
-
-    const isEven = index % 2 === 0;
-
-    return (
-        <div
-            ref={cardRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className={`group relative flex flex-col lg:flex-row items-stretch gap-6 md:gap-8 lg:gap-10 p-6 md:p-8 lg:p-12 rounded-2xl md:rounded-3xl transition-all duration-1000 transform ${isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-                }
-                /* Premium Glass Effect - Enhanced */
-                bg-gradient-to-br from-white/[0.12] via-white/[0.06] to-white/[0.02]
-                backdrop-blur-2xl
-                border border-white/20
-                shadow-[0_8px_32px_0_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.1)_inset]
-                hover:shadow-[0_20px_60px_0_rgba(255,74,1,0.25),0_0_0_1px_rgba(255,255,255,0.2)_inset]
-                hover:border-[#ff4a01]/30
-                hover:bg-gradient-to-br hover:from-white/[0.15] hover:via-white/[0.08] hover:to-white/[0.03]
-                overflow-hidden
-            `}
-        >
-            {/* Animated Gradient Border Effect */}
-            <div className="absolute inset-0 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-r from-[#ff4a01]/30 via-orange-500/20 to-[#ff4a01]/30 animate-gradient-xy blur-xl"></div>
-            </div>
-
-            {/* Subtle Inner Glow */}
-            <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/[0.05] via-transparent to-transparent pointer-events-none"></div>
-
-            {/* Content Section */}
-            <div className={`flex-1 flex flex-col justify-center space-y-4 md:space-y-5 lg:space-y-6 z-10 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight drop-shadow-lg">
-                    {service.title}
-                </h3>
-                <p className="text-gray-300 text-sm md:text-base lg:text-lg leading-relaxed">
-                    {service.description}
-                </p>
-                <ul className="space-y-2 md:space-y-2.5 lg:space-y-3">
-                    {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-center text-xs md:text-sm lg:text-base font-medium text-white/90 group/item">
-                            <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#ff4a01] mr-2.5 md:mr-3 group-hover/item:scale-125 group-hover/item:shadow-[0_0_8px_rgba(255,74,1,0.8)] transition-all"></span>
-                            <span className="group-hover/item:text-white group-hover/item:translate-x-0.5 transition-all">{feature}</span>
-                        </li>
-                    ))}
-                </ul>
-                <button className="w-fit px-5 md:px-6 py-2.5 md:py-3 mt-2 lg:mt-4 text-xs md:text-sm font-bold text-white bg-white/10 border border-white/30 rounded-full hover:bg-[#ff4a01] hover:border-[#ff4a01] hover:shadow-[0_0_20px_rgba(255,74,1,0.5)] transition-all duration-300 group/btn backdrop-blur-sm">
-                    Learn More
-                    <span className="inline-block ml-2 group-hover/btn:translate-x-1 transition-transform">→</span>
-                </button>
-            </div>
-
-            {/* Visual Section - Hidden on Mobile, Visible on Desktop */}
-            <div className={`hidden lg:flex flex-1 relative lg:min-h-[400px] z-10 ${isEven ? "lg:order-2" : "lg:order-1"}`}>
-                <div className="absolute inset-0 flex gap-2 lg:gap-3 p-2 lg:p-3 perspective-1000">
-                    {/* Column 1 - Scrolls UP - All Cards Same Angle */}
-                    <div className="flex-1 relative overflow-hidden rounded-2xl">
-                        <div className={`absolute inset-0 flex flex-col flex-nowrap gap-2 lg:gap-3 ${isHovered ? 'animate-scroll-slow' : 'animate-scroll'}`}>
-                            {/* Repeat images 3 times for seamless infinite loop */}
-                            {[...service.images, ...service.images, ...service.images].map((img, i) => (
-                                <div
-                                    key={i}
-                                    className="relative w-full h-[180px] md:h-[220px] lg:h-[260px] rounded-xl overflow-hidden flex-shrink-0 transform rotate-3 group/card"
-                                >
-                                    <Image
-                                        src={img}
-                                        alt={`${service.title} showcase ${i + 1}`}
-                                        fill
-                                        className="object-cover opacity-80 group-hover/card:opacity-100 group-hover/card:scale-105 transition-all duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent opacity-70 group-hover/card:opacity-50 transition-opacity duration-300"></div>
-                                    <div className="absolute inset-0 border border-white/10 rounded-xl"></div>
-                                </div>
-                            ))}
-                        </div>
-                        {/* Gradient fade edges */}
-                        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black via-black/70 to-transparent z-10 pointer-events-none"></div>
-                        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black via-black/70 to-transparent z-10 pointer-events-none"></div>
-                    </div>
-
-                    {/* Column 2 - Scrolls DOWN (Opposite Direction) - All Cards Same Angle */}
-                    <div className="flex-1 relative overflow-hidden rounded-2xl">
-                        <div className={`absolute inset-0 flex flex-col flex-nowrap gap-2 lg:gap-3 ${isHovered ? 'animate-scroll-reverse-slow' : 'animate-scroll-reverse'}`}>
-                            {/* Repeat images 3 times for seamless infinite loop */}
-                            {[...service.images, ...service.images, ...service.images].map((img, i) => (
-                                <div
-                                    key={i}
-                                    className="relative w-full h-[180px] md:h-[220px] lg:h-[260px] rounded-xl overflow-hidden flex-shrink-0 transform rotate-3 group/card"
-                                >
-                                    <Image
-                                        src={img}
-                                        alt={`${service.title} showcase ${i + 1}`}
-                                        fill
-                                        className="object-cover opacity-80 group-hover/card:opacity-100 group-hover/card:scale-105 transition-all duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-transparent opacity-70 group-hover/card:opacity-50 transition-opacity duration-300"></div>
-                                    <div className="absolute inset-0 border border-white/10 rounded-xl"></div>
-                                </div>
-                            ))}
-                        </div>
-                        {/* Gradient fade edges */}
-                        <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black via-black/70 to-transparent z-10 pointer-events-none"></div>
-                        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black via-black/70 to-transparent z-10 pointer-events-none"></div>
-                    </div>
-                </div>
-
-                {/* Overall Gradient Overlay for Depth */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/10 pointer-events-none rounded-2xl"></div>
-            </div>
-        </div>
-    );
-};
 
 export default function Services() {
     return (
-        <section className="relative py-16 md:py-20 lg:py-24 px-4 overflow-hidden bg-black">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neutral-900/50 via-black to-black pointer-events-none" />
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02] pointer-events-none"></div>
+        <>
+            <DesktopServices />
+            <MobileServices />
+        </>
+    );
+}
 
-            <div className="max-w-7xl mx-auto space-y-12 md:space-y-16 lg:space-y-20 relative z-10">
-                {/* Section Header */}
-                <div className="text-center space-y-3 md:space-y-4 mb-12 md:mb-16 lg:mb-20">
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tighter">
-                        What We <span className="font-playfair italic text-[#ff4a01]">Do</span>
-                    </h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto text-base md:text-lg px-4">
-                        Comprehensive digital solutions tailored to scale your business.
-                    </p>
-                </div>
+function DesktopServices() {
+    const targetRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: targetRef,
+    });
 
-                {/* Services List */}
-                <div className="flex flex-col gap-12 md:gap-16 lg:gap-24">
-                    {services.map((service, index) => (
-                        <ServiceCard key={index} service={service} index={index} />
-                    ))}
+    return (
+        <section ref={targetRef} className="relative h-[400vh] bg-[#ff4a01] hidden lg:block" id="expertise">
+            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden perspective-1000">
+
+                {/* Background Text - Subtle Watermark */}
+                <h2 className="absolute top-10 left-0 w-full text-center text-[25vw] font-bold text-white/10 select-none z-0 leading-none tracking-tighter">
+                    EXPERTISE
+                </h2>
+
+                {/* Cards Container */}
+                <div className="relative z-10 w-full flex justify-center items-center h-[550px]">
+                    {services.map((service, index) => {
+                        // Calculate final X position relative to center
+                        // Spread them out nicely: card width 260px + gap
+                        const centerIndex = (services.length - 1) / 2;
+                        const offset = index - centerIndex;
+                        // Gap: 270 offset - 260 width = 10px gap
+                        const xFinal = offset * 270;
+
+                        return (
+                            <FlippingCard
+                                key={service.id}
+                                service={service}
+                                index={index}
+                                scrollYProgress={scrollYProgress}
+                                xFinal={xFinal}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </section>
     );
+}
+
+const FlippingCard = ({ service, index, scrollYProgress, xFinal }: {
+    service: typeof services[0],
+    index: number,
+    scrollYProgress: MotionValue<number>,
+    xFinal: number
+}) => {
+
+    // Smooth Animation Ranges
+
+    // 1. Spreading Phase (0 -> 0.15)
+    // Faster spread, then LOCKS.
+    const x = useTransform(scrollYProgress, [0, 0.15], [0, xFinal], { clamp: true });
+
+    // 2. Stack Rotation Cleanup (0 -> 0.15)
+    // Straightens quickly
+    const randomRotate = (index % 2 === 0 ? 3 : -3) * (index + 0.5);
+    const rotateZ = useTransform(scrollYProgress, [0, 0.15], [randomRotate, 0], { clamp: true });
+
+    // 3. Vertical Scroll Lift (0 -> 0.3)
+    // Initial lift on spread
+    const yScroll = useTransform(scrollYProgress, [0, 0.15, 0.3], [0, -30, 0]);
+
+    // 4. Scale Effect (0.1 -> 0.4)
+    const scale = useTransform(scrollYProgress, [0.1, 0.4], [0.95, 1.05]);
+
+    // 5. Flip Logic (0.25 -> 0.85)
+    // "Sirf Flip Ho"
+    const rotateY = useTransform(scrollYProgress, [0.25, 0.85], [0, 180]);
+
+    return (
+        <motion.div
+            style={{
+                x,
+                y: yScroll,
+                scale,
+                rotateZ,
+                position: 'absolute',
+                transformStyle: "preserve-3d"
+            }}
+            className="w-[260px] h-[380px] cursor-pointer perspective-1000"
+        >
+            {/* FLOAT ANIMATION WRAPPER */}
+            {/* This handles the "halke halke float" continuous bobbing */}
+            <motion.div
+                animate={{ y: [0, -12, 0] }}
+                transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.2 // Stagger the float
+                }}
+                style={{
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                    width: '100%',
+                    height: '100%'
+                }}
+            >
+                {/* FRONT FACE (Logo ONLY) */}
+                <div
+                    className="absolute inset-0 bg-white rounded-[1.5rem] shadow-2xl flex items-center justify-center backface-hidden"
+                    style={{ backfaceVisibility: 'hidden' }}
+                >
+                    <div className="relative w-48 h-48 opacity-90 transition-opacity duration-300">
+                        {/* Larger Logo */}
+                        <Image
+                            src="/logo.png"
+                            alt="NexGrow Logo"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                </div>
+
+                {/* BACK FACE (Details) */}
+                <div
+                    className="absolute inset-0 bg-white rounded-[1.5rem] shadow-2xl flex flex-col justify-between p-6"
+                    style={{
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)'
+                    }}
+                >
+                    <div className="flex justify-between items-start border-b border-gray-100 pb-4">
+                        <h3 className="text-2xl font-bold text-black uppercase tracking-tight">
+                            {service.title}
+                        </h3>
+                    </div>
+
+                    <ul className="space-y-3 my-4 flex-1">
+                        {service.features.map((feature, i) => (
+                            <li key={i} className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 bg-[#ff4a01] rounded-full"></span>
+                                {feature}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="border-t border-gray-100 pt-4">
+                        <p className="text-xs text-gray-500 leading-relaxed mb-2">
+                            {service.desc}
+                        </p>
+                        <div className="text-4xl font-bold text-gray-200 text-right">
+                            {service.id}
+                        </div>
+                    </div>
+                </div>
+
+            </motion.div>
+        </motion.div>
+    );
+};
+
+function MobileServices() {
+    return (
+        <div className="lg:hidden flex flex-col gap-4 py-20 px-4 bg-[#ff4a01]" id="expertise-mobile">
+            <div className="mb-12 text-center text-white">
+                <h2 className="text-4xl font-bold mb-2 tracking-tight">Our Expertise</h2>
+                <p className="opacity-90">Swipe to explore</p>
+            </div>
+            {services.map((service, index) => (
+                <div
+                    key={index}
+                    className="sticky top-24 bg-white rounded-2xl shadow-xl p-6 h-[280px] flex flex-col justify-between mb-4"
+                    style={{ zIndex: index + 10 }}
+                >
+                    <div className="flex justify-between items-start">
+                        <h3 className="text-2xl font-bold text-black">{service.title}</h3>
+                        <span className="text-4xl font-bold text-gray-200">{service.id}</span>
+                    </div>
+                    <ul className="space-y-2">
+                        {service.features.map((f, i) => (
+                            <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 bg-[#ff4a01] rounded-full"></span>
+                                {f}
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="border-t border-gray-100 pt-4">
+                        <p className="text-xs text-gray-400">{service.desc}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
 }

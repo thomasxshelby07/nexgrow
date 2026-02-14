@@ -10,12 +10,12 @@ const services = [
         id: "brand",
         title: "Brand Identity Design",
         images: [
-            "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600&h=400", // 3:2 (Thumbnail/Landscape)
-            "https://images.unsplash.com/photo-1626785774573-4b7993143a4d?auto=format&fit=crop&q=80&w=600&h=600", // 1:1 (Square)
-            "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=600&h=750", // 4:5 (Insta Portrait)
-            "https://images.unsplash.com/photo-1558655146-d09347e0b7a8?auto=format&fit=crop&q=80&w=600&h=400", // Landscape
-            "https://images.unsplash.com/photo-1586717791821-3f44a5638d0f?auto=format&fit=crop&q=80&w=600&h=600", // Square
-            "https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&q=80&w=600&h=750"  // Portrait
+            "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=600&h=400",
+            "https://images.unsplash.com/photo-1626785774573-4b7993143a4d?auto=format&fit=crop&q=80&w=600&h=600",
+            "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=600&h=750",
+            "https://images.unsplash.com/photo-1558655146-d09347e0b7a8?auto=format&fit=crop&q=80&w=600&h=400",
+            "https://images.unsplash.com/photo-1586717791821-3f44a5638d0f?auto=format&fit=crop&q=80&w=600&h=600",
+            "https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&q=80&w=600&h=750"
         ]
     },
     {
@@ -108,129 +108,106 @@ export default function WhatWeDo() {
     const [selectedService, setSelectedService] = useState(services[0]);
 
     return (
-        <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black py-20 lg:py-24">
+        <section className="relative w-full min-h-screen flex items-center justify-center bg-white py-12 lg:py-16">
 
-            {/* Background - Smooth Premium Flow */}
-            <div className="absolute inset-0 z-0 bg-black">
-                {/* Main Gradient Flow: Pitch Black -> Rich Dark Orange */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-[#ff4a01]/5"></div>
-
-                {/* Ambient Glows - Softer and Deeper */}
-                <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-[#ff4a01]/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '6s' }}></div>
-                <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-orange-900/10 rounded-full blur-[120px] mix-blend-screen" ></div>
-            </div>
+            {/* Clean Background - Removed all blurs/glows */}
+            <div className="absolute inset-0 z-0 bg-white"></div>
 
             <div className="container relative z-10 mx-auto px-4 lg:px-6 h-full flex flex-col justify-center">
 
-                {/* Section Header - Centered & Spaced */}
-                <div className="w-full max-w-7xl mx-auto mb-12 flex flex-col items-center justify-center text-center gap-4 px-2">
+                {/* Section Header */}
+                <div className="w-full max-w-7xl mx-auto mb-8 md:mb-12 flex flex-col items-center justify-center text-center gap-4 px-2">
                     <div className="max-w-3xl">
-                        <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black mb-4 tracking-tight">
                             What We <span className="font-playfair italic text-[#ff4a01]">Do Best</span>
                         </h2>
-                        <p className="text-base md:text-lg text-gray-400 max-w-xl mx-auto">
+                        <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
                             Integrated digital systems that scale your brand.
                         </p>
                     </div>
                 </div>
 
-                {/* Main Content Glass Container - Increased Mobile Height */}
-                <div className="relative w-full max-w-7xl mx-auto h-[850px] lg:h-[650px] flex flex-col-reverse lg:flex-row 
-                    backdrop-blur-3xl bg-white/[0.01] 
-                    border border-white/10 shadow-[0_0_80px_-20px_rgba(255,74,1,0.15)]
-                    group/container box-border rounded-xl overflow-hidden">
+                {/* Main Content Container - Compact & Inclined */}
+                <div className="relative w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row 
+                    bg-white border border-gray-200
+                    rounded-2xl overflow-hidden h-auto lg:h-[600px]">
 
-                    {/* LEFT: Services List (35%) */}
-                    {/* LEFT: Services List (55% on mobile, 40% on desktop) */}
-                    <div className="w-full lg:w-[40%] h-[55%] lg:h-full flex flex-col border-t lg:border-t-0 lg:border-r border-white/10 relative bg-black/40 lg:bg-black/20">
+                    {/* LEFT: Services List (40%) */}
+                    <div className="w-full lg:w-[40%] h-[400px] lg:h-full flex flex-col border-t lg:border-t-0 lg:border-r border-gray-200 relative bg-white">
                         {/* Scrollable List Container */}
-                        <div className="flex-1 flex flex-col p-4 lg:p-8 space-y-1 overflow-y-auto thin-scrollbar">
+                        <div className="flex-1 flex flex-col overflow-y-auto thin-scrollbar p-0">
                             {services.map((service) => (
                                 <div
                                     key={service.id}
                                     onMouseEnter={() => setSelectedService(service)}
-                                    onClick={() => setSelectedService(service)} // For mobile tap
-                                    className={`group/item relative w-full text-left py-4 px-6 transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0 rounded-lg
+                                    // Mobile: tapping sets active and scrolls to it slightly if needed
+                                    onClick={() => setSelectedService(service)}
+                                    className={`group/item relative w-full text-left py-4 px-6 transition-colors duration-200 cursor-pointer border-b border-gray-100 last:border-0
                                         ${selectedService.id === service.id
-                                            ? "bg-white/[0.08]"
-                                            : "hover:bg-white/[0.04]"
+                                            ? "bg-gray-50"
+                                            : "hover:bg-gray-50/50"
                                         }`}
                                 >
                                     <div className="flex items-center justify-between relative z-10 gap-3">
-                                        <span className={`text-base lg:text-xl font-medium transition-colors duration-300 
+                                        <span className={`text-base lg:text-lg font-medium transition-colors duration-200 
                                             ${selectedService.id === service.id
-                                                ? "text-white font-playfair italic tracking-wide"
-                                                : "text-gray-400 group-hover/item:text-gray-200"}`}>
+                                                ? "text-black font-semibold" // Clean bold
+                                                : "text-gray-500 group-hover/item:text-black"}`}>
                                             {service.title}
                                         </span>
 
-                                        <ArrowUpRight className={`w-5 h-5 transition-all duration-300 
+                                        <ArrowUpRight className={`w-4 h-4 transition-all duration-200 
                                             ${selectedService.id === service.id
-                                                ? "text-[#ff4a01] opacity-100 translate-x-0 translate-y-0"
-                                                : "text-gray-500 opacity-0 -translate-x-2 translate-y-2 group-hover/item:opacity-50"
+                                                ? "text-[#ff4a01] opacity-100"
+                                                : "text-gray-400 opacity-0 group-hover/item:opacity-50"
                                             }`}
                                         />
                                     </div>
 
-                                    {/* Active Glow Indicator */}
+                                    {/* Active Indicator - Clean Orange Bar Left */}
                                     {selectedService.id === service.id && (
-                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#ff4a01] shadow-[0_0_15px_#ff4a01] animate-in fade-in duration-300 rounded-l-lg"></div>
+                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#ff4a01]"></div>
                                     )}
                                 </div>
                             ))}
                         </div>
 
-                        {/* View All Button Area - Visible on Mobile & Premium Redesign (Centered, No Glow, Fill Anim) */}
-                        <div className="p-4 lg:p-6 border-t border-white/10 bg-black/40 backdrop-blur-md relative z-20 flex justify-center">
-                            <button className="relative overflow-hidden group rounded-full border border-white/20 hover:border-[#ff4a01] transition-colors duration-300 px-10 py-3 uppercase tracking-wider font-bold text-sm">
-                                {/* Fill Background */}
-                                <div className="absolute inset-0 bg-[#ff4a01] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"></div>
-
-                                {/* Content */}
-                                <span className="relative z-10 flex items-center gap-2 text-white transition-colors duration-300">
+                        {/* View All Button Area (Compact) */}
+                        <div className="p-4 border-t border-gray-200 bg-white relative z-20 flex justify-center">
+                            <button className="relative overflow-hidden group rounded-full border border-gray-300 hover:border-[#ff4a01] transition-colors duration-300 px-8 py-2.5 uppercase tracking-wider font-bold text-xs bg-white">
+                                <div className="absolute inset-0 bg-[#ff4a01] translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                                <span className="relative z-10 flex items-center gap-2 text-black group-hover:text-white transition-colors duration-300">
                                     View All Services
-                                    <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                                    <ArrowUpRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                                 </span>
                             </button>
                         </div>
                     </div>
 
-                    {/* RIGHT: Auto Image Scroller (65%) */}
-                    {/* RIGHT: Auto Image Scroller (45% on mobile, 60% on desktop) */}
-                    <div className="w-full lg:w-[60%] h-[45%] lg:h-full relative overflow-hidden bg-black/40">
+                    {/* RIGHT: Auto Image Scroller (60%) - Inclined */}
+                    <div className="w-full lg:w-[60%] h-[400px] lg:h-full relative overflow-hidden bg-gray-50 p-0">
 
-                        {/* Inner Vignette / Mask */}
-                        <div className="absolute inset-0 z-20 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
-                        <div className="absolute inset-x-0 top-0 h-24 lg:h-32 bg-gradient-to-b from-black/80 to-transparent z-20 pointer-events-none"></div>
-                        <div className="absolute inset-x-0 bottom-0 h-24 lg:h-32 bg-gradient-to-t from-black/80 to-transparent z-20 pointer-events-none"></div>
-
-                        <div className="grid grid-cols-2 gap-4 lg:gap-6 h-[120%] -mt-[10%] p-6 lg:p-12 rotate-[-2deg] scale-105 opacity-80 mix-blend-screen transition-opacity duration-700">
+                        {/* Scroller Container with TILT/INCLINE */}
+                        <div className="grid grid-cols-2 gap-4 lg:gap-6 h-[140%] -mt-[10%] -ml-[10%] w-[120%] 
+                                rotate-[-6deg] scale-105 origin-center">
 
                             {/* Column 1 - Scrolls UP */}
                             <div className="relative h-full overflow-hidden">
-                                <div className="animate-scroll-vertical-up flex flex-col gap-4 lg:gap-6">
+                                <div className="flex flex-col gap-4 lg:gap-6 animate-scroll-vertical-up">
                                     {[...selectedService.images, ...selectedService.images, ...selectedService.images].map((img, i) => (
-                                        <ImageCard key={`up-${i}`} src={img} alt="Service showcase" delay={i * 0.1} />
+                                        <ImageCard key={`up-${i}`} src={img} alt="Service showcase" />
                                     ))}
                                 </div>
                             </div>
 
                             {/* Column 2 - Scrolls DOWN */}
-                            <div className="relative h-full overflow-hidden pt-10 lg:pt-20">
-                                <div className="animate-scroll-vertical-down flex flex-col gap-4 lg:gap-6">
-                                    {[...selectedService.images].reverse().concat([...selectedService.images].reverse()).concat([...selectedService.images].reverse()).map((img, i) => (
-                                        <ImageCard key={`down-${i}`} src={img} alt="Service showcase" delay={i * 0.1} />
+                            <div className="relative h-full overflow-hidden pt-20">
+                                <div className="flex flex-col gap-4 lg:gap-6 animate-scroll-vertical-down">
+                                    {[...selectedService.images, ...selectedService.images, ...selectedService.images].map((img, i) => (
+                                        <ImageCard key={`down-${i}`} src={img} alt="Service showcase" />
                                     ))}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Interactive Overlay Content on Right Side */}
-                        <div className="absolute bottom-6 right-6 lg:bottom-10 lg:right-10 z-30 max-w-sm text-right pointer-events-none">
-                            <h3 className="text-2xl lg:text-4xl font-bold text-white mb-2 drop-shadow-xl">{selectedService.title}</h3>
-                            <p className="text-gray-300 text-sm lg:text-base font-medium drop-shadow-md bg-black/50 backdrop-blur-md p-3 lg:p-4 border border-white/10 inline-block rounded-lg">
-                                Premium execution for scalable growth.
-                            </p>
                         </div>
 
                     </div>
@@ -240,24 +217,17 @@ export default function WhatWeDo() {
     );
 }
 
-const ImageCard = ({ src, alt, delay }: { src: string; alt: string; delay: number }) => {
+const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
     return (
-        <div
-            className="relative w-full overflow-hidden shadow-2xl transition-transform duration-700 ease-out hover:scale-105"
-            style={{ animationDelay: `${delay}s` }}
-        >
+        <div className="relative w-full h-[200px] md:h-[250px] lg:h-[300px] shrink-0 overflow-hidden rounded-lg bg-gray-200 transition-transform duration-500 hover:scale-[1.02] shadow-sm">
             <Image
                 src={src}
                 alt={alt}
-                width={600}
-                height={800}
-                className="w-full h-auto object-cover grayscale-[30%] hover:grayscale-0 transition-all duration-700 hover:scale-110"
+                fill
+                className="object-cover"
                 sizes="(max-width: 768px) 50vw, 33vw"
+                loading="eager"
             />
-            {/* Orange Overlay Tint */}
-            <div className="absolute inset-0 bg-[#ff4a01]/10 mix-blend-overlay opacity-50"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
         </div>
     );
 };
-

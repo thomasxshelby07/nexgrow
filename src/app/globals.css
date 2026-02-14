@@ -1,27 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  /* NEXGROW Color Palette */
+  /* NEXGROW Color Palette - LIGHT THEME */
   --brand: #ff4a01;
-  --background: #000000;
-  --foreground: #f9f9f9;
+  --background: #ffffff;
+  --foreground: #1a1a1a;
 
-  --color-primary: #000000;
-  /* Base Black */
-  --color-secondary: #f9f9f9;
-  /* White Text */
+  --color-primary: #ff4a01;
+  /* Brand Orange */
+  --color-secondary: #1a1a1a;
+  /* Dark Text */
   --color-gray: #646464;
   /* Paragraph Gray */
-  --color-dark-gray: #333333;
-  /* Cards/Sections BG */
-  --color-light-gray: #a7a7a7;
+  --color-dark-gray: #f3f3f3;
+  /* Light Gray for Cards/Sections BG */
+  --color-light-gray: #e5e5e5;
   /* Borders */
 
-  /* Gradient Colors */
-  --gradient-start: #d9c3ab;
-  --gradient-mid1: #c10801;
-  --gradient-mid2: #f16001;
-  --gradient-end: #000000;
+  /* Gradient Colors - Adjusted for Light Mode if needed */
+  --gradient-start: #fff0e6;
+  --gradient-mid1: #ff4a01;
+  --gradient-mid2: #ff8040;
+  --gradient-end: #ffffff;
 }
 
 @theme inline {
@@ -240,4 +240,47 @@ body {
 
 .animate-scroll-vertical-down {
   animation: scroll-vertical-down 40s linear infinite;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+.delay-400 {
+  animation-delay: 0.4s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
 }

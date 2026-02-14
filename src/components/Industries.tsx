@@ -54,10 +54,10 @@ export default function Industries() {
     const [activeindex, setActiveIndex] = useState<number | null>(null);
 
     return (
-        <section className="relative w-full py-24 overflow-hidden bg-black">
+        <section className="relative w-full py-24 overflow-hidden bg-white">
 
             {/* Animated Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#1a0500] to-[#050000] bg-[length:400%_400%] animate-gradient-xy opacity-80"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-white bg-[length:400%_400%] animate-gradient-xy opacity-80"></div>
 
             {/* Ambient Moving Glows */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -66,7 +66,7 @@ export default function Industries() {
             </div>
 
             {/* Grid Pattern Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] mask-gradient opacity-20"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000005_1px,transparent_1px),linear-gradient(to_bottom,#00000005_1px,transparent_1px)] bg-[size:32px_32px] mask-gradient opacity-20"></div>
 
             <div className="container relative z-10 mx-auto px-4 lg:px-6">
 
@@ -75,10 +75,10 @@ export default function Industries() {
                     <span className="text-[#ff4a01] font-mono text-xs tracking-[0.2em] uppercase mb-4 block animate-fade-in">
                         Industries We Work With
                     </span>
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
+                    <h2 className="text-3xl md:text-5xl font-bold text-black mb-6 tracking-tight leading-tight">
                         We Know <span className="font-playfair italic text-[#ff4a01]">Your Business.</span>
                     </h2>
-                    <p className="text-gray-400 text-lg leading-relaxed max-w-2xl mx-auto">
+                    <p className="text-gray-600 text-lg leading-relaxed max-w-2xl mx-auto">
                         Every industry is different. We adapt our strategy to how your customers actually buy.
                     </p>
                 </div>
@@ -101,7 +101,7 @@ export default function Industries() {
                                 <div className={`absolute inset-0 transition-all duration-500 backdrop-blur-md
                                     ${activeindex === index
                                         ? 'bg-[#ff4a01]/90'
-                                        : 'bg-white/[0.02] hover:bg-white/[0.05] border border-white/10'}
+                                        : 'bg-black/[0.02] hover:bg-black/[0.05] border border-black/10'}
                                 `}></div>
 
                                 {/* Inner Content Container */}
@@ -120,19 +120,19 @@ export default function Industries() {
                                         </div>
 
                                         {/* Title */}
-                                        <h3 className={`text-sm md:text-lg font-bold mt-4 transition-all duration-500 ${activeindex === index ? 'text-white translate-y-0 opacity-100' : 'text-white/80 opacity-90'}`}>
+                                        <h3 className={`text-sm md:text-lg font-bold mt-4 transition-all duration-500 ${activeindex === index ? 'text-white translate-y-0 opacity-100' : 'text-black/80 opacity-90'}`}>
                                             {item.title}
                                         </h3>
 
                                         {/* Description */}
-                                        <div className={`mt-2 text-xs md:text-sm text-white/90 leading-tight transition-all duration-500 overflow-hidden ${activeindex === index ? 'max-h-20 opacity-100 translate-y-0' : 'max-h-0 opacity-0 translate-y-4'}`}>
+                                        <div className={`mt-2 text-xs md:text-sm text-black/70 leading-tight transition-all duration-500 overflow-hidden ${activeindex === index ? 'text-white max-h-20 opacity-100 translate-y-0' : 'max-h-0 opacity-0 translate-y-4'}`}>
                                             {item.description}
                                         </div>
 
                                     </div>
 
                                     {/* Glass Shine */}
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none mix-blend-overlay"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent pointer-events-none mix-blend-overlay"></div>
                                 </div>
                             </div>
                         ))}
@@ -140,7 +140,7 @@ export default function Industries() {
                 </div>
 
                 {/* Bottom Line */}
-                <div className="text-center border-t border-white/5 pt-12">
+                <div className="text-center border-t border-black/5 pt-12">
                     <p className="text-[#ff4a01] text-lg font-medium">
                         One structured growth approach tailored to each.
                     </p>

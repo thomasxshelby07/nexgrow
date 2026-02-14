@@ -1,159 +1,127 @@
 "use client";
 
-import { Check, X, ShieldCheck, Zap, Rocket, Coins, Users } from "lucide-react";
+import { Check, X, ShieldCheck, Zap, Rocket, Coins, Users, Minus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
-
 export default function Comparison() {
-    const sectionRef = useRef(null);
-    const rowsRef = useRef<(HTMLDivElement | null)[]>([]);
     const [hoveredRow, setHoveredRow] = useState<number | null>(null);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            rowsRef.current.forEach((row, index) => {
-                if (row) {
-                    gsap.fromTo(row,
-                        { opacity: 0, y: 30, scale: 0.98 },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                            duration: 0.6,
-                            delay: index * 0.1,
-                            ease: "power2.out",
-                            scrollTrigger: {
-                                trigger: row,
-                                start: "top bottom-=50",
-                                toggleActions: "play none none reverse"
-                            }
-                        }
-                    );
-                }
-            });
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, []);
-
     const criteria = [
-        { name: "Strategic Depth", icon: ShieldCheck },
-        { name: "Execution Speed", icon: Zap },
-        { name: "Scalability", icon: Rocket },
-        { name: "Cost Efficiency", icon: Coins },
-        { name: "Reliability", icon: Users },
+        { name: "Strategy", icon: ShieldCheck },
+        { name: "Speed", icon: Zap },
+        { name: "Scale", icon: Rocket },
+        { name: "Cost", icon: Coins },
+        { name: "Reliable", icon: Users },
     ];
 
     const competitors = [
         {
             name: "nexgrow",
-            description: "Full-stack growth team.",
+            description: "Full-stack growth.",
             isHero: true,
             values: [true, true, true, true, true],
         },
         {
-            name: "In-House Team",
-            description: "High cost, burnout risk.",
+            name: "In-House",
+            description: "High fixed cost.",
             isHero: false,
             values: [true, false, false, false, true],
         },
         {
-            name: "Traditional Agency",
+            name: "Agencies",
             description: "Slow & expensive.",
             isHero: false,
             values: [true, false, true, false, true],
         },
         {
             name: "Freelancers",
-            description: "Unreliable scaling.",
+            description: "Unreliable.",
             isHero: false,
             values: [false, true, false, true, false],
         },
         {
-            name: "DIY / Tools",
-            description: "No strategy, just tools.",
+            name: "DIY",
+            description: "No strategy.",
             isHero: false,
             values: [false, false, false, true, false],
         },
     ];
 
     return (
-        <section ref={sectionRef} className="relative w-full py-24 lg:py-32 bg-black overflow-hidden text-white">
+        <section className="relative w-full py-16 lg:py-32 bg-white text-black overflow-hidden border-t border-gray-100">
 
-            {/* Background Ambience - Premium Glows */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[#ff4a01]/5 blur-[150px] rounded-full mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }}></div>
-                <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-orange-900/10 blur-[120px] rounded-full"></div>
-            </div>
+            {/* Subtle Gradient Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-50 via-white to-white opacity-60"></div>
 
             <div className="container relative z-10 mx-auto px-4 lg:px-6">
 
-                {/* Header */}
-                <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight relative inline-block">
-                        The Old Way? <span className="font-playfair italic text-gray-500 line-through decoration-[#ff4a01]/50 decoration-4 opacity-70">Expensive.</span> <br />
-                        <span className="text-white relative z-10">The <span className="text-[#ff4a01] relative inline-block">
-                            NexGrow
-                            <svg className="absolute w-full h-3 -bottom-1 left-0 text-[#ff4a01] opacity-60" viewBox="0 0 100 10" preserveAspectRatio="none">
-                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="3" fill="none" />
-                            </svg>
-                        </span> Way?</span>
+                {/* Header - Mixed Fonts & Better Visibility */}
+                <div className="text-center mb-12 lg:mb-20 max-w-4xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight leading-[1.1]">
+                        <span className="font-playfair italic font-medium text-gray-800 block md:inline mr-3 decoration-gray-400 decoration-1 line-through opacity-80">
+                            The Old Way?
+                        </span>
+                        <span className="text-black font-sans">
+                            The <span className="text-[#ff4a01]">NexGrow Way.</span>
+                        </span>
                     </h2>
-                    <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-                        Stop juggling freelancers or overpaying bloated agencies. We combine the best of both worlds.
+                    <p className="text-gray-700 text-base md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+                        Stop overpaying for mediocrity. Start scaling with precision.
                     </p>
                 </div>
 
-                {/* Scrollable Table Container - HIDDEN SCROLLBAR */}
-                <div className="w-full overflow-x-auto pb-8 scrollbar-hide cursor-grab active:cursor-grabbing">
-                    <div className="min-w-[900px] lg:min-w-0 px-4">
+                {/* Scrollable Table Container */}
+                <div className="w-full overflow-x-auto pb-6 scrollbar-hide cursor-grab active:cursor-grabbing">
+                    <div className="min-w-[700px] lg:min-w-0 px-2 lg:px-4">
 
                         {/* Table Header */}
-                        <div className="grid grid-cols-6 gap-4 mb-6 px-6 text-center border-b border-white/5 pb-6 lg:border-none lg:pb-0">
-                            <div className="col-span-1 text-left text-gray-500 font-mono text-xs uppercase tracking-widest pl-4 self-end">Platform</div>
+                        <div className="grid grid-cols-6 gap-2 lg:gap-4 mb-3 px-4 text-center border-b border-gray-300 pb-4">
+                            <div className="col-span-1 text-left text-gray-900 font-bold text-[10px] uppercase tracking-[0.15em] pl-2 self-end">Model</div>
                             {criteria.map((c, i) => (
-                                <div key={i} className="col-span-1 flex flex-col items-center gap-3 text-gray-400 group">
-                                    <div className="p-3 rounded-full bg-white/5 border border-white/5 group-hover:bg-[#ff4a01]/10 group-hover:border-[#ff4a01]/30 transition-all duration-300">
-                                        <c.icon className="w-5 h-5 group-hover:text-[#ff4a01] transition-colors" />
+                                <div key={i} className="col-span-1 flex flex-col items-center gap-2 group">
+                                    <div className="p-1.5 lg:p-2 rounded bg-gray-200 border border-gray-300 group-hover:border-[#ff4a01]/50 transition-colors">
+                                        <c.icon className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gray-700 group-hover:text-[#ff4a01] transition-colors" />
                                     </div>
-                                    <span className="text-xs font-bold uppercase tracking-wider group-hover:text-white transition-colors">{c.name}</span>
+                                    <span className="hidden lg:block text-[10px] font-bold uppercase tracking-widest text-gray-700 group-hover:text-black transition-colors">{c.name}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Rows */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             {competitors.map((competitor, idx) => (
-                                <div
+                                <motion.div
                                     key={idx}
-                                    ref={(el) => { if (el) rowsRef.current[idx] = el }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                    viewport={{ once: true }}
                                     onMouseEnter={() => setHoveredRow(idx)}
                                     onMouseLeave={() => setHoveredRow(null)}
                                     className={cn(
-                                        "relative grid grid-cols-6 gap-4 p-6 rounded-2xl items-center transition-all duration-500 border",
+                                        "relative grid grid-cols-6 gap-2 lg:gap-4 p-4 lg:p-6 rounded-xl items-center transition-all duration-300 border shadow-sm",
                                         competitor.isHero
-                                            ? "bg-[#ff4a01]/10 border-[#ff4a01]/50 shadow-[0_0_50px_rgba(255,74,1,0.15)] z-10 scale-[1.02]"
-                                            : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] hover:border-white/10",
-                                        hoveredRow !== null && hoveredRow !== idx && !competitor.isHero ? "opacity-50 scale-[0.98] blur-[1px]" : "opacity-100"
+                                            ? "bg-white border-[#ff4a01] shadow-[0_10px_40px_-10px_rgba(255,74,1,0.2)] z-10 scale-[1.02]"
+                                            : "bg-gray-100 border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:shadow-md",
+                                        hoveredRow !== null && hoveredRow !== idx && !competitor.isHero ? "opacity-60 blur-[0.5px]" : "opacity-100"
                                     )}
                                 >
-                                    {/* Name & Desc Column */}
-                                    <div className="col-span-1 flex flex-col justify-center pl-2">
-                                        <h3 className={cn("text-lg font-bold", competitor.isHero ? 'text-white' : 'text-gray-300')}>
+                                    {/* Hero Indicator Line */}
+                                    {competitor.isHero && (
+                                        <div className="absolute left-0 top-3 bottom-3 w-[4px] bg-[#ff4a01] rounded-r-full"></div>
+                                    )}
+
+                                    <div className="col-span-1 flex flex-col justify-center pl-3 lg:pl-5">
+                                        <h3 className={cn("text-sm lg:text-lg font-bold truncate", competitor.isHero ? 'text-black' : 'text-gray-900')}>
                                             {competitor.name === "nexgrow" ? (
-                                                <span className="flex items-center gap-2">
-                                                    NEX
-                                                    <span className="text-[#ff4a01]">GROW</span>
+                                                <span className="flex items-center gap-1 text-[#ff4a01]">
+                                                    NEXGROW
                                                 </span>
                                             ) : competitor.name}
                                         </h3>
-                                        <p className="text-xs text-gray-500 leading-tight pr-2 mt-1">
+                                        <p className="text-[10px] lg:text-xs text-gray-600 mt-0.5 font-bold hidden lg:block">
                                             {competitor.description}
                                         </p>
                                     </div>
@@ -163,26 +131,21 @@ export default function Comparison() {
                                         <div key={i} className="col-span-1 flex items-center justify-center">
                                             {isValid ? (
                                                 <div className={cn(
-                                                    "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500",
+                                                    "w-6 h-6 lg:w-8 lg:h-8 rounded-full flex items-center justify-center transition-all duration-300",
                                                     competitor.isHero
-                                                        ? 'bg-[#ff4a01] text-white shadow-[0_0_15px_#ff4a01] scale-110'
-                                                        : 'bg-transparent text-gray-400 border border-white/20 group-hover:border-white/40'
+                                                        ? 'bg-[#ff4a01] text-white shadow-[0_2px_8px_rgba(255,74,1,0.3)]'
+                                                        : 'bg-gray-300 text-gray-700' // Darker, clear background
                                                 )}>
-                                                    <Check className="w-5 h-5" strokeWidth={3} />
+                                                    <Check className="w-3.5 h-3.5 lg:w-4 lg:h-4" strokeWidth={3} />
                                                 </div>
                                             ) : (
-                                                <div className="w-8 h-8 flex items-center justify-center text-gray-800 opacity-30">
-                                                    <X className="w-5 h-5" />
+                                                <div className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center text-gray-400">
+                                                    <Minus className="w-3 h-3 lg:w-4 lg:h-4" />
                                                 </div>
                                             )}
                                         </div>
                                     ))}
-
-                                    {/* Interactive Glow for Hero Row */}
-                                    {competitor.isHero && (
-                                        <div className="absolute inset-0 rounded-2xl border border-[#ff4a01]/30 animate-pulse pointer-events-none"></div>
-                                    )}
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
