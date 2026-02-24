@@ -235,11 +235,11 @@ body {
 }
 
 .animate-scroll-vertical-up {
-  animation: scroll-vertical-up 40s linear infinite;
+  animation: scroll-vertical-up 15s linear infinite;
 }
 
 .animate-scroll-vertical-down {
-  animation: scroll-vertical-down 40s linear infinite;
+  animation: scroll-vertical-down 15s linear infinite;
 }
 
 /* Fade In Up Animation */

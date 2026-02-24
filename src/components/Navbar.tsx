@@ -3,64 +3,31 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Briefcase, Menu, DollarSign, LayoutGrid, MessageSquare, Home, Sparkles, ArrowRight, ChevronRight, User, FileText } from "lucide-react";
+import { Briefcase, Menu, LayoutGrid, MessageSquare, Home, Sparkles, ArrowRight, ChevronRight, User, Film } from "lucide-react";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 
 // Service Data
 const services = [
-    {
-        id: "01",
-        title: "Strategy",
-        icon: User, // Using generic icons for now, can be specific
-        desc: "Align growth.",
-    },
-    {
-        id: "02",
-        title: "UI/UX",
-        icon: LayoutGrid,
-        desc: "Design value.",
-    },
-    {
-        id: "03",
-        title: "Website",
-        icon: Home,
-        desc: "Fast apps.",
-    },
-    {
-        id: "04",
-        title: "Mobile App",
-        icon: Briefcase,
-        desc: "iOS & Android.",
-    },
+    { id: "01", title: "Strategy", icon: User, desc: "Align growth.", href: "#whatwedo" },
+    { id: "02", title: "UI/UX", icon: LayoutGrid, desc: "Design value.", href: "#whatwedo" },
+    { id: "03", title: "Website", icon: Home, desc: "Fast apps.", href: "#whatwedo" },
+    { id: "04", title: "Mobile App", icon: Briefcase, desc: "iOS & Android.", href: "#whatwedo" },
+    { id: "05", title: "Video Editing", icon: Film, desc: "Viral assets.", href: "/" },
 ];
 
 // Animation Variants
 const menuVariants: Variants = {
     hidden: { opacity: 0, y: 10, scale: 0.95 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        transition: { duration: 0.2, ease: "easeOut" }
-    },
-    exit: {
-        opacity: 0,
-        y: 10,
-        scale: 0.95,
-        transition: { duration: 0.15 }
-    }
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.2, ease: "easeOut" } },
+    exit: { opacity: 0, y: 10, scale: 0.95, transition: { duration: 0.15 } }
 };
 
-const itemVariants: Variants = {
-    hidden: { opacity: 0, x: -5 },
-    visible: { opacity: 1, x: 0 }
-};
-
-export default function Navbar() {
+export default function Navbar({ data }: { data?: any }) {
     const [activeSection, setActiveSection] = useState("Home");
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isServicesHovered, setIsServicesHovered] = useState(false);
-    const [isMoreHovered, setIsMoreHovered] = useState(false);
+
+    const cta = data?.ctaGlobal || { text: "Start Project", link: "#contact" };
 
     // Active Section Logic
     useEffect(() => {
@@ -76,30 +43,23 @@ export default function Navbar() {
                 }
             });
         }, { threshold: 0.5 });
-
         sections.forEach((section) => observer.observe(section));
         return () => observer.disconnect();
     }, []);
 
-    const leftNavItems = [
-        { name: "Home", icon: Home, href: "#hero" },
-        // Services separate
-        { name: "Blog", icon: MessageSquare, href: "#blog" },
-    ];
-
-    const rightNavItems = [
-        { name: "Projects", icon: LayoutGrid, href: "#casestudies" },
-        // More separate
+    const navItems = [
+        { name: "Home", href: "/" },
+        { name: "Blog", href: "#blog" },
+        { name: "Projects", href: "#casestudies" },
     ];
 
     return (
         <>
-            {/* FLOATING BOTTOM DOCK - COMPACT & PREMIUM */}
+            {/* FLOATING BOTTOM DOCK - REVERTED */}
             <div className="fixed z-50 bottom-0 left-0 w-full md:bottom-6 md:left-1/2 md:-translate-x-1/2 md:w-auto md:max-w-fit pointer-events-none">
-
                 <div className="relative pointer-events-auto flex flex-col items-center">
 
-                    {/* MEGA MENU POPOVER - Compact */}
+                    {/* MEGA MENU POPOVER */}
                     <AnimatePresence>
                         {isServicesHovered && (
                             <motion.div
@@ -109,205 +69,112 @@ export default function Navbar() {
                                 exit="exit"
                                 onMouseEnter={() => setIsServicesHovered(true)}
                                 onMouseLeave={() => setIsServicesHovered(false)}
-                                className="absolute bottom-full mb-3 md:-translate-x-[20%] w-[90vw] md:w-[600px] p-2 z-40"
+                                className="absolute bottom-full mb-4 w-[90vw] md:w-[500px] p-2"
                             >
-                                <div className="bg-white/70 backdrop-blur-[40px] saturate-150 border border-white/50 shadow-[0_20px_40px_-5px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.3)_inset] rounded-[24px] overflow-hidden p-4">
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                        {services.map((service) => (
-                                            <Link
-                                                key={service.id}
-                                                href="#whatwedo"
-                                                onClick={() => setIsServicesHovered(false)}
-                                                className="group flex flex-col items-start justify-between gap-1 p-4 h-full rounded-2xl hover:bg-white/60 transition-all duration-300 border border-transparent hover:border-white/50 relative overflow-hidden"
-                                            >
-                                                <div className="flex items-center justify-between w-full">
-                                                    <span className="text-sm font-bold text-gray-800 group-hover:text-black transition-colors">{service.title}</span>
-                                                    <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff4a01] -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
+                                <div className="bg-white/80 backdrop-blur-3xl rounded-[32px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/50">
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {services.map((s) => (
+                                            <Link key={s.id} href={s.href} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-white/60 transition-all group">
+                                                <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-[#ff4a01]/10 transition-colors">
+                                                    <s.icon size={18} className="text-gray-600 group-hover:text-[#ff4a01]" />
                                                 </div>
-                                                <p className="text-[10px] font-medium text-gray-400 group-hover:text-gray-500 transition-colors line-clamp-1">{service.desc}</p>
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-black text-gray-900">{s.title}</span>
+                                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">{s.desc}</span>
+                                                </div>
                                             </Link>
                                         ))}
-                                        <Link href="#whatwedo" className="flex flex-col items-center justify-center gap-2 p-4 h-full rounded-2xl bg-[#ff4a01]/5 hover:bg-[#ff4a01]/10 border border-[#ff4a01]/10 group transition-all duration-300">
-                                            <span className="text-xs font-bold text-[#ff4a01] flex items-center gap-1 group-hover:gap-2 transition-all">
-                                                View All <ArrowRight size={14} strokeWidth={2.5} />
-                                            </span>
-                                        </Link>
                                     </div>
+                                    <Link href="#whatwedo" className="mt-2 flex items-center justify-between p-4 bg-gray-50/50 rounded-2xl hover:bg-[#ff4a01]/5 group transition-all">
+                                        <span className="text-xs font-black text-gray-900 group-hover:text-[#ff4a01]">Explore All Core Capabilities</span>
+                                        <ArrowRight size={16} className="text-gray-400 group-hover:text-[#ff4a01] group-hover:translate-x-1 transition-all" />
+                                    </Link>
                                 </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
 
                     {/* BAR CONTAINER */}
-                    <div className="
-                        hidden md:flex items-center justify-center gap-1 p-1.5
-                        bg-white/75 backdrop-blur-3xl saturate-150
-                        rounded-t-[20px] md:rounded-[20px]
-                        border border-white/50 shadow-2xl shadow-black/5
-                        ring-1 ring-black/5
-                    ">
-
-                        {/* Desktop Nav */}
-                        <div className="hidden md:flex items-center gap-1">
-                            {/* Home */}
-                            <Link href="#hero" className={cn(
-                                "px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-300",
-                                activeSection === "Home" ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-black hover:bg-white/40"
+                    <div className="hidden md:flex items-center justify-center gap-1 p-1.5 bg-white/80 backdrop-blur-3xl rounded-[24px] border border-white/40 shadow-[0_15px_35px_rgba(0,0,0,0.1)] ring-1 ring-black/5">
+                        {navItems.map((item) => (
+                            <Link key={item.name} href={item.href} className={cn(
+                                "px-5 py-2.5 rounded-[18px] text-[11px] font-black uppercase tracking-widest transition-all duration-300",
+                                activeSection === item.name ? "bg-black text-white shadow-lg" : "text-gray-500 hover:text-black hover:bg-white/50"
                             )}>
-                                <Home size={16} strokeWidth={2.5} />
-                                <span className="text-xs font-bold uppercase tracking-wide">Home</span>
+                                {item.name}
                             </Link>
+                        ))}
 
-                            {/* Services (Hover Trigger) */}
-                            <div
-                                className="relative"
-                                onMouseEnter={() => setIsServicesHovered(true)}
-                                onMouseLeave={() => setIsServicesHovered(false)}
-                            >
-                                <Link href="#whatwedo" className={cn(
-                                    "px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-300",
-                                    activeSection === "Services" ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-black hover:bg-white/40"
-                                )}>
-                                    <Briefcase size={16} strokeWidth={2.5} />
-                                    <span className="text-xs font-bold uppercase tracking-wide">Services</span>
-                                </Link>
-                                {/* Hover Bridge */}
-                                {isServicesHovered && <div className="absolute bottom-full left-0 w-full h-6 bg-transparent" />}
-                            </div>
+                        {/* Services Trigger */}
+                        <button
+                            onMouseEnter={() => setIsServicesHovered(true)}
+                            onMouseLeave={() => setIsServicesHovered(false)}
+                            className={cn(
+                                "px-5 py-2.5 rounded-[18px] text-[11px] font-black uppercase tracking-widest transition-all duration-300 flex items-center gap-1.5",
+                                isServicesHovered ? "bg-black text-white shadow-lg" : "text-gray-500 hover:text-black hover:bg-white/50"
+                            )}
+                        >
+                            Services
+                        </button>
 
-                            {/* Blog */}
-                            <Link href="#blog" className={cn(
-                                "px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-300",
-                                activeSection === "Blog" ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-black hover:bg-white/40"
-                            )}>
-                                <MessageSquare size={16} strokeWidth={2.5} />
-                                <span className="text-xs font-bold uppercase tracking-wide">Blog</span>
-                            </Link>
+                        <div className="w-px h-6 bg-gray-200 mx-2" />
 
-                            {/* Projects */}
-                            <Link href="#casestudies" className={cn(
-                                "px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-300",
-                                activeSection === "Projects" ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-black hover:bg-white/40"
-                            )}>
-                                <LayoutGrid size={16} strokeWidth={2.5} />
-                                <span className="text-xs font-bold uppercase tracking-wide">Projects</span>
-                            </Link>
-
-                            {/* More (Click Trigger -> Full Page) */}
-                            <button
-                                onClick={() => setIsMobileMenuOpen(true)}
-                                className={cn(
-                                    "px-4 py-2 rounded-xl flex items-center gap-2 transition-all duration-300 cursor-pointer",
-                                    isMobileMenuOpen ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-black hover:bg-white/40"
-                                )}
-                            >
-                                <Menu size={16} strokeWidth={2.5} />
-                                <span className="text-xs font-bold uppercase tracking-wide">More</span>
-                            </button>
-
-                            {/* Spacer / Divider */}
-                            <div className="w-px h-6 bg-gray-200 mx-1"></div>
-
-                            {/* CTA Button (Right) */}
-                            <div className="px-1">
-                                <Link href="#contact" className="group relative inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-extrabold text-white uppercase tracking-wider
-                                    bg-gradient-to-r from-[#ff4a01] to-[#ff7e3c] rounded-xl
-                                    border border-white/20 shadow-sm
-                                    hover:to-[#ff5e1e] hover:scale-105 transition-all
-                                ">
-                                    Start Project
-                                    <ArrowRight size={12} strokeWidth={3} className="group-hover:translate-x-0.5 transition-transform" />
-                                </Link>
-                            </div>
-                        </div>
-
-
+                        <Link href={cta.link} className="group flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#ff4a01] to-[#ff7e3c] text-white rounded-[18px] text-[11px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-md active:scale-95">
+                            {cta.text}
+                            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
                     </div>
                 </div>
             </div>
 
-            {/* 
-             * MOBILE NAVBAR - REWRITTEN & SEPARATED (ROOT LEVEL)
-             * Style: Floating Dock (Style 2)
-             * Features: Solid White, High Contrast, Dot Indicators, Centered
-             */}
-            <div className="md:hidden fixed z-[999] bottom-0 left-0 w-full h-[80px] bg-white rounded-t-[24px] shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)] border-t border-gray-100 flex items-center justify-between px-8 pointer-events-auto pb-2">
-
-                {/* WORK - Standard Icon + Dot */}
-                <Link href="#casestudies" onClick={() => setActiveSection("Projects")} className="relative flex flex-col items-center justify-center w-12 h-12">
-                    <LayoutGrid
-                        size={24}
-                        className={cn("transition-colors duration-300", activeSection === "Projects" ? "text-black" : "text-gray-400")}
-                        strokeWidth={activeSection === "Projects" ? 2.5 : 2}
-                    />
-                    {activeSection === "Projects" && (
-                        <motion.div layoutId="mobile-nav-dot" className="absolute -bottom-1 w-1.5 h-1.5 bg-[#ff4a01] rounded-full" />
-                    )}
+            {/* MOBILE NAVBAR - BOTTOM DOCK */}
+            <div className="md:hidden fixed z-[999] bottom-0 left-0 w-full h-[80px] bg-white rounded-t-[28px] shadow-[0_-8px_32px_rgba(0,0,0,0.08)] border-t border-gray-50 flex items-center justify-around px-6 pb-2">
+                <Link href="/" onClick={() => setActiveSection("Home")} className="p-3">
+                    <Home size={24} className={activeSection === "Home" ? "text-black" : "text-gray-300"} />
                 </Link>
-
-                {/* SERVICES - Standard Icon + Dot */}
-                <Link href="#whatwedo" onClick={() => setActiveSection("Services")} className="relative flex flex-col items-center justify-center w-12 h-12">
-                    <Briefcase
-                        size={24}
-                        className={cn("transition-colors duration-300", activeSection === "Services" ? "text-black" : "text-gray-400")}
-                        strokeWidth={activeSection === "Services" ? 2.5 : 2}
-                    />
-                    {activeSection === "Services" && (
-                        <motion.div layoutId="mobile-nav-dot" className="absolute -bottom-1 w-1.5 h-1.5 bg-[#ff4a01] rounded-full" />
-                    )}
+                <Link href="#casestudies" onClick={() => setActiveSection("Projects")} className="p-3">
+                    <LayoutGrid size={24} className={activeSection === "Projects" ? "text-black" : "text-gray-300"} />
                 </Link>
-
-                {/* CONTACT - Featured/Prominent Button */}
                 <div className="relative -top-6">
-                    <Link
-                        href="#contact"
-                        onClick={() => setActiveSection("Contact")}
-                        className={cn(
-                            "flex items-center justify-center w-16 h-16 rounded-full shadow-xl transition-transform duration-300",
-                            "bg-gradient-to-tr from-[#ff4a01] to-[#ff7e3c] text-white border-4 border-white"
-                        )}
-                    >
-                        <MessageSquare size={24} fill="white" strokeWidth={2.5} />
+                    <Link href="#contact" className="w-16 h-16 bg-[#ff4a01] rounded-full flex items-center justify-center text-white shadow-xl shadow-orange-500/20 border-4 border-white">
+                        <MessageSquare size={24} fill="white" />
                     </Link>
                 </div>
-
-                {/* RESOURCES/BLOG - Standard Icon + Dot */}
-                <Link href="#blog" onClick={() => setActiveSection("Blog")} className="relative flex flex-col items-center justify-center w-12 h-12">
-                    <Sparkles
-                        size={24}
-                        className={cn("transition-colors duration-300", activeSection === "Blog" ? "text-black" : "text-gray-400")}
-                        strokeWidth={activeSection === "Blog" ? 2.5 : 2}
-                    />
-                    {activeSection === "Blog" && (
-                        <motion.div layoutId="mobile-nav-dot" className="absolute -bottom-1 w-1.5 h-1.5 bg-[#ff4a01] rounded-full" />
-                    )}
+                <Link href="#blog" onClick={() => setActiveSection("Blog")} className="p-3">
+                    <Sparkles size={24} className={activeSection === "Blog" ? "text-black" : "text-gray-300"} />
                 </Link>
-
-                {/* MENU - Trigger */}
-                <button onClick={() => setIsMobileMenuOpen(true)} className="relative flex flex-col items-center justify-center w-12 h-12 text-gray-400 active:scale-95 transition-transform">
-                    <Menu size={24} strokeWidth={2} />
+                <button onClick={() => setIsMobileMenuOpen(true)} className="p-3 text-gray-300">
+                    <Menu size={24} />
                 </button>
-
             </div>
 
-            {/* FULL SCREEN MOBILE MENU */}
+            {/* MOBILE MENU OVERLAY */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[60] bg-white/95 backdrop-blur-3xl flex flex-col items-center justify-center"
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: "100%" }}
+                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                        className="fixed inset-0 z-[1000] bg-white flex flex-col p-8"
                     >
-                        <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-6 right-6 p-2 bg-gray-100 rounded-full">
-                            <ChevronRight size={24} className="rotate-90" />
-                        </button>
-                        <div className="flex flex-col gap-6 text-center">
-                            <Link href="#hero" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black tracking-tighter hover:text-[#ff4a01]">HOME</Link>
-                            <Link href="#whatwedo" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black tracking-tighter hover:text-[#ff4a01]">SERVICES</Link>
-                            <Link href="#casestudies" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black tracking-tighter hover:text-[#ff4a01]">PROJECTS</Link>
-                            <Link href="#blog" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black tracking-tighter hover:text-[#ff4a01]">BLOG</Link>
-                            <Link href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black tracking-tighter text-[#ff4a01]">LET'S TALK</Link>
+                        <div className="flex items-center justify-between mb-12">
+                            <img src="/logo.png" alt="Logo" className="w-[100px] object-contain" />
+                            <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 bg-gray-100 rounded-full">
+                                <ChevronRight size={24} className="rotate-90 text-gray-900" />
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-6">
+                            {["HOME", "BLOG", "SERVICES", "PROJECTS"].map((item) => (
+                                <Link
+                                    key={item}
+                                    href={item === "HOME" ? "/" : `#${item.toLowerCase()}`}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="text-5xl font-black tracking-tighter hover:text-[#ff4a01] transition-colors"
+                                >
+                                    {item}
+                                </Link>
+                            ))}
                         </div>
                     </motion.div>
                 )}

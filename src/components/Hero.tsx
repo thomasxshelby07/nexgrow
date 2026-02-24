@@ -2,146 +2,248 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, Star, Mouse } from "lucide-react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 import CompanyTicker from "./CompanyTicker";
 
-export default function Hero() {
+// Helper to parse "Highlight **Text**" and "*Italic Text*"
+const parseTitle = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
+
+    return parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+            const content = part.slice(2, -2);
+            return (
+                <span key={i} className="relative inline-block px-4 py-1 md:px-7 md:py-2 mx-1 transform -rotate-3 align-middle whitespace-nowrap">
+                    <span className="absolute inset-0 bg-black rounded-2xl shadow-xl shadow-black/5" />
+                    <span className="relative z-10 text-white font-black tracking-tighter">
+                        {content}
+                    </span>
+                </span>
+            );
+        } else if (part.startsWith("*") && part.endsWith("*")) {
+            const content = part.slice(1, -1);
+            return (
+                <span key={i} className="font-playfair italic text-[#ff4a01] font-black mx-1">
+                    {content}
+                </span>
+            );
+        }
+        return <span key={i}>{part}</span>;
+    });
+};
+
+export default function Hero({ data }: { data?: any }) {
     const containerRef = useRef(null);
+    const buttonRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"]
     });
 
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
     const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
+    // Spring Settings for Magnetic Button
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+    const springSettings = { damping: 30, stiffness: 300 };
+    const springX = useSpring(mouseX, springSettings);
+    const springY = useSpring(mouseY, springSettings);
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!buttonRef.current) return;
+        const rect = buttonRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        mouseX.set(x * 0.25);
+        mouseY.set(y * 0.25);
+    };
+
+    const handleMouseLeave = () => {
+        mouseX.set(0);
+        mouseY.set(0);
+    };
+
+    // Defaults if no data
+    const title = data?.title || "A *Complete* Team Behind Your **Brand**";
+    const subtitle = data?.subtitle || "Social media, performance marketing, websites and custom software under one roof.";
+    const ctaText = data?.ctaPrimary?.text || "Book a Call";
+    const ctaLink = data?.ctaPrimary?.link || "#contact";
+
+    const ratingValue = "4.8";
+    const projectCount = "50+ Projects Done";
+
+    const avatars = data?.avatars && data.avatars.length > 0 ? data.avatars : [
+        "https://randomuser.me/api/portraits/men/32.jpg",
+        "https://randomuser.me/api/portraits/women/44.jpg",
+        "https://randomuser.me/api/portraits/men/22.jpg"
+    ];
+
+    const background = data?.heroImage || "/hero-bg-default.jpg";
+
     return (
-        <section ref={containerRef} className="relative flex flex-col items-center justify-start min-h-screen overflow-hidden bg-white selection:bg-[#ff4a01] selection:text-white pt-20 pb-0 md:pt-12">
+        <section ref={containerRef} className="relative flex flex-col min-h-[100vh] md:min-h-screen w-full overflow-hidden bg-white selection:bg-[#ff4a01] selection:text-white">
 
-            {/* Background Image - Increased Opacity */}
-            <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-                <Image
-                    src="/herbanner.png"
-                    alt="Hero Background"
-                    fill
-                    className="object-cover opacity-60"
-                    priority
+            {/* Cinematic Ambience (Floating Orbs) */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                <motion.div
+                    animate={{
+                        x: [0, 100, 0],
+                        y: [0, -50, 0],
+                        opacity: [0.1, 0.3, 0.1]
+                    }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-1/4 -left-10 w-96 h-96 bg-[#ff4a01]/5 blur-[120px] rounded-full"
                 />
-                <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/60 to-transparent"></div>
+                <motion.div
+                    animate={{
+                        x: [0, -80, 0],
+                        y: [0, 100, 0],
+                        opacity: [0.1, 0.2, 0.1]
+                    }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                    className="absolute bottom-1/4 -right-10 w-[500px] h-[500px] bg-orange-200/5 blur-[150px] rounded-full"
+                />
             </div>
 
-            {/* Desktop: Company Ticker at Top - FULL WIDTH */}
-            <div className="hidden md:block w-full z-20 mb-4 border-y border-gray-100/50 bg-white/50 backdrop-blur-sm">
-                <CompanyTicker />
-            </div>
+            {/* Cinematic Background Image Overlay */}
+            <motion.div style={{ scale, opacity }} className="absolute inset-0 z-0 opacity-40">
+                {background && (
+                    <Image
+                        src={background}
+                        alt="Background"
+                        fill
+                        className="object-cover pointer-events-none brightness-[1.05]"
+                        priority
+                        quality={100}
+                    />
+                )}
+            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-transparent to-white z-0" />
 
-            {/* Main Content Container */}
-            <motion.div
-                style={{ y, opacity }}
-                className="relative z-10 flex flex-col items-center w-full max-w-[1200px] mx-auto text-center px-4 md:px-6 pb-[100px] md:pb-0"
-            >
-                {/* 1. Top Logo - Image Replaces Text */}
-                <div className="mb-4 md:mb-5">
-                    <div className="relative w-[180px] h-[50px] md:w-[220px] md:h-[60px]">
-                        <Image
-                            src="/logo.png"
-                            alt="NEXGROW Logo"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
+            {/* HIERARCHY START */}
+            <div className="relative z-20 flex flex-col w-full h-full flex-1">
+
+                {/* 1. TOP TICKER */}
+                <div className="w-full pt-1 md:pt-4 pb-1 md:pb-2 opacity-50 md:opacity-60 scale-[0.88] md:scale-[0.95] origin-top">
+                    <CompanyTicker brands={data?.brands} />
                 </div>
 
-                {/* Reviews Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="mb-5 md:mb-5 flex justify-center"
-                >
-                    <div className="group flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-gray-200/60 transition-all cursor-default shadow-sm">
-                        <div className="flex -space-x-2">
-                            {[
-                                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&q=80&fit=crop",
-                                "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=64&h=64&q=80&fit=crop",
-                                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&q=80&fit=crop"
-                            ].map((src, i) => (
-                                <div key={i} className="relative w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-gray-100">
-                                    <Image
-                                        src={src}
-                                        alt={`User ${i + 1}`}
-                                        fill
-                                        className="object-cover"
-                                    />
+                {/* MAIN BODY */}
+                <div className="flex-1 flex flex-col items-center justify-start md:justify-center text-center px-4 md:px-6 pt-6 md:pt-4 pb-16 md:pb-24">
+
+                    {/* 2. LOGO */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                        className="mb-4 md:mb-8 animate-fade-in relative"
+                    >
+                        <Link href="/" className="relative w-[110px] h-[35px] md:w-[160px] md:h-[50px] block mx-auto transition-transform hover:scale-105 duration-500">
+                            <Image src="/logo.png" alt="NEXGROW" fill className="object-contain" priority />
+                        </Link>
+                    </motion.div>
+
+                    {/* 3. TRUST PILL */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="mb-8 md:mb-10 inline-flex items-center gap-3 md:gap-4 px-4 py-1.5 md:px-5 md:py-2 rounded-full bg-white/40 backdrop-blur-3xl border border-white/80 shadow-[0_4px_30px_rgba(0,0,0,0.03)] ring-1 ring-black/5"
+                    >
+                        <div className="flex -space-x-2.5">
+                            {avatars.slice(0, 3).map((src: string, i: number) => (
+                                <div key={i} className="relative w-6 h-6 md:w-7 md:h-7 rounded-full border-2 border-white overflow-hidden shadow-sm">
+                                    <Image src={src} alt={`Client ${i}`} fill className="object-cover" />
                                 </div>
                             ))}
                         </div>
-                        <span className="h-4 w-[1px] bg-gray-300 mx-1"></span>
-                        <div className="flex items-center gap-1.5 overflow-hidden">
-                            <span className="flex text-[#ff4a01] text-xs">★★★★★</span>
-                            <span className="text-[10px] sm:text-xs font-bold text-gray-800 whitespace-nowrap">4.8+ Rating & 50+ Projects Done</span>
+
+                        <div className="flex items-center gap-2 md:gap-3">
+                            <div className="flex items-center gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className="w-2.5 h-2.5 md:w-3 md:h-3 fill-[#ff4a01] text-[#ff4a01]" />
+                                ))}
+                            </div>
+                            <div className="flex items-center gap-1 border-l border-black/10 pl-2 md:pl-3">
+                                <span className="text-[10px] md:text-[11px] font-black text-gray-900 leading-none">{ratingValue}</span>
+                                <span className="hidden sm:inline text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-none">• {projectCount}</span>
+                            </div>
                         </div>
+                    </motion.div>
+
+                    {/* 4. HEADLINE */}
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="text-[46px] sm:text-[54px] md:text-[62px] lg:text-[76px] font-black tracking-tighter text-gray-950 leading-[0.98] md:leading-[1.05] mb-8 md:mb-8 text-balance max-w-[10ch] sm:max-w-[12ch] md:max-w-[15ch] lg:max-w-[14ch] mx-auto drop-shadow-sm"
+                    >
+                        {parseTitle(title)}
+                    </motion.h1>
+
+                    {/* 5. SUBTITLE */}
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.6 }}
+                        className="text-[13px] md:text-base text-gray-700/50 font-bold max-w-[35ch] md:max-w-[45ch] mx-auto leading-relaxed mb-10 md:mb-6 px-4"
+                    >
+                        {subtitle}
+                    </motion.p>
+
+                    {/* 6. CTA BUTTON (V16 - Even Smaller & Higher on Desktop) */}
+                    <div className="relative group scale-[1.05] md:scale-[0.85] mt-2 md:mt-2 transition-all">
+                        <motion.div
+                            ref={buttonRef}
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                            style={{ x: springX, y: springY }}
+                            className="relative p-[1.5px] overflow-hidden rounded-2xl group"
+                        >
+                            <motion.div
+                                animate={{ rotate: [0, 360] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                                className="absolute inset-0 w-[400%] h-[400%] left-[-150%] top-[-150%] bg-[conic-gradient(from_0deg,#ff4a01,transparent_30%,#ff4a01,transparent_60%,#ff4a01)]"
+                            />
+
+                            <Link href={ctaLink} className="relative flex items-center gap-2.5 px-9 py-4 md:px-7 md:py-3 bg-black text-white rounded-[calc(1rem-1.5px)] font-black text-base md:text-lg overflow-hidden ring-1 ring-white/10 shadow-2xl">
+                                <motion.div
+                                    animate={{ x: ["-100%", "300%"] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#ff4a01] to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                                <span className="relative z-10">{ctaText}</span>
+                                <ArrowRight className="relative z-10 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                            </Link>
+                        </motion.div>
                     </div>
-                </motion.div>
 
-                {/* Main Headline - Massive Size */}
-                <motion.h1
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-                    className="text-[48px] sm:text-[64px] md:text-[80px] lg:text-[90px] font-semibold tracking-tight text-black leading-[1.05] mb-5 md:mb-4"
-                >
-                    A <span className="font-playfair italic text-[#ff4a01] font-black">Complete</span> Team <br className="hidden md:block" />
-                    Behind Your <span className="inline-block px-3 py-0 bg-black text-white rounded-lg -rotate-2 transform mx-1 font-bold">
-                        Brand
-                    </span>
-                </motion.h1>
-
-                {/* Subtext - Reduced Size */}
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-base md:text-lg text-gray-700 font-medium max-w-[500px] md:max-w-[550px] mx-auto leading-relaxed mb-6 md:mb-5"
-                >
-                    Social media, performance marketing, websites and custom software under one roof.
-                </motion.p>
-
-                {/* 2. Single Animated CTA */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                    className="mb-8 md:mb-8"
-                >
-                    <Link href="#contact" className="relative inline-flex group">
-
-                        <div className="relative inline-flex items-center justify-center p-[2px] overflow-hidden rounded-2xl">
-                            <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#ff4a01_50%,#0000_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <span className="absolute inset-[-1000%] bg-gray-300 group-hover:opacity-0 transition-opacity duration-300" />
-
-                            <span className="relative inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all bg-black rounded-2xl group-hover:bg-gray-900">
-                                Book a Call
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </span>
+                    {/* 7. SCROLL IDENTIFIER (V16 - Visible on All Devices) */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.5, duration: 1 }}
+                        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                    >
+                        <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 translate-y-2 opacity-50">Scroll</span>
+                        <div className="w-[1.5px] h-10 md:h-12 bg-black/5 rounded-full overflow-hidden relative">
+                            <motion.div
+                                animate={{ y: ["-100%", "300%"] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent via-[#ff4a01] to-transparent"
+                            />
                         </div>
-                    </Link>
-                </motion.div>
-
-                {/* Mobile: Company Ticker Below CTA - Full Width Hack */}
-                <div className="md:hidden w-[100vw] -ml-4 mt-8 mb-4">
-                    <div className="text-center mb-4">
-                        <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Trusted By Industry Leaders</p>
-                    </div>
-                    <CompanyTicker />
+                    </motion.div>
                 </div>
+            </div>
 
-                {/* Removed Social Proof Section Code */}
-
-            </motion.div>
+            {/* Bottom Horizon Shadow */}
+            <div className="absolute bottom-0 left-0 w-full h-16 md:h-24 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none" />
         </section>
     );
 }
